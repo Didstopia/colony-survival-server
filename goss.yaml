@@ -1,0 +1,18 @@
+command:
+  ps -eo comm | tee /tmp/what_do_i_see:
+    title: Colony Survival Server should be running
+    exit-status: 0
+    stdout:
+      - colonyserverdedicated.exe
+
+port:
+  tcp:27016:
+    title: Colony Survival Server should be accepting TCP connections on port 27016
+    listening: true
+
+port:
+  tcp:27017:
+    title: Colony Survival Server should be accepting TCP connections on port 27017
+    listening: true
+
+## TODO: Test graceful shutdown
