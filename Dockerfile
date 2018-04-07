@@ -27,6 +27,7 @@ WORKDIR /
 
 # Expose necessary ports
 EXPOSE 27016/tcp
+EXPOSE 27016/udp
 EXPOSE 27017/tcp
 
 # Setup default environment variables for the server
