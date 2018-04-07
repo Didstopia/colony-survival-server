@@ -2,8 +2,6 @@
 
 Provides a dedicated linux server for Colony Survival running inside a Docker container. 
 
-**NOTE: WORK IN PROGRESS**
-
 **NOTE**: This image will install/update on startup. The path ```/steamcmd/colonysurvival``` can be mounted on the host for data persistence.
 
 # How to run the server
@@ -11,18 +9,15 @@ Provides a dedicated linux server for Colony Survival running inside a Docker co
 2. Optionally mount ```/steamcmd/colonysurvival``` somewhere on the host or inside another container to keep your data safe
 3. Enjoy!
 
-*Be sure to edit `starbound_server.config` to further customize your installation.*
-
 The following environment variables are available:
 ```
-STEAM_USERNAME (DEFAULT: "" - Required for installing/updating Starbound)
-STEAM_PASSWORD (DEFAULT: "" - Required for installing/updating Starbound)
-SKIP_STEAMCMD  (DEFAULT: "" - Optional for skipping updating Starbound)
+SERVER_NAME (DEFAULT: "Docker" - Sets the publicly visible name of the server)
+SERVER_EXTRA_ARGS (DEFAULT: "" - Optional startup arguments for the server)
 ```
 
 # Updating the server
 
-As long as you have both your `STEAM_USERNAME` and `STEAM_PASSWORD` set, simply restarting the container should trigger the update procedure.
+Simply restart the container to trigger the update procedure.
 
 # Anything else
 

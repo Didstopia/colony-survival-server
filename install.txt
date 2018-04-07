@@ -1,0 +1,6 @@
+@sSteamCmdForcePlatformType linux
+login anonymous
+force_install_dir /steamcmd/colonysurvival
+app_info_update 1
+app_update 748090 validate
+quit
