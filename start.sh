@@ -8,6 +8,10 @@ exit_handler()
 	echo "Waiting for server to shutdown.."
 	echo ""
 	kill -SIGINT "$child"
+
+	## TODO: Use fifo to send the "send" and "stop_server" commands to the server process
+	#mono /steamcmd/colonysurvival/colonyserverdedicated.exe send "Shutting down.."
+	#mono /steamcmd/colonysurvival/colonyserverdedicated.exe stop_server
 	sleep 5
 
 	echo ""
@@ -42,6 +46,7 @@ echo ""
 echo "Starting Colony Survival.."
 echo ""
 mono /steamcmd/colonysurvival/colonyserverdedicated.exe start_server +server.world "${SERVER_NAME}" +server.name "${SERVER_NAME}" +server.networktype SteamOnline ${SERVER_EXTRA_ARGS} 2>&1 &
+#mono /steamcmd/colonysurvival/colonyserverdedicated.exe 2>&1 &
 
 child=$!
 wait "$child"
