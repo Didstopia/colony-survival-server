@@ -9,6 +9,7 @@ ARG DEBIAN_FRONTEND=noninteractive
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
     net-tools \
+    expect \
     mono-complete && \
 	rm -rf /var/lib/apt/lists/*
 
@@ -19,8 +20,9 @@ VOLUME ["/steamcmd/colonysurvival"]
 # Add the steamcmd installation script
 ADD install.txt /install.txt
 
-# Copy the startup script
+# Copy any scripts
 ADD start.sh /start.sh
+ADD server.sh /server.sh
 
 # Set the current working directory
 WORKDIR /
