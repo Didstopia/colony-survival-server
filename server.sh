@@ -1,7 +1,7 @@
 #!/usr/bin/expect -f
 
 # Set a global timeout
-set timeout 120
+set timeout -1
 
 # Configure the exit handler
 exit -onexit {
