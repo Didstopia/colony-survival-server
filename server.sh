@@ -12,7 +12,7 @@ trap {
   send -- "\rstop_server\r"
   expect "Succesfully closed server\r"
   send -- "\rquit\r"
-} SIGINT
+} SIGHUP SIGINT SIGQUIT SIGTERM
 
 # Start the server process
 spawn mono /steamcmd/colonysurvival/colonyserverdedicated.exe start_server +server.world "$::env(SERVER_NAME)" +server.name "$::env(SERVER_NAME)" +server.networktype SteamOnline $::env(SERVER_EXTRA_ARGS) 2>&1
