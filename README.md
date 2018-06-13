@@ -12,7 +12,7 @@ Provides a dedicated linux server for Colony Survival running inside a Docker co
 The following environment variables are available:
 ```
 SERVER_NAME (DEFAULT: "Docker" - Sets the publicly visible name of the server)
-SERVER_EXTRA_ARGS (DEFAULT: "" - Optional startup arguments for the server)
+SERVER_PASSWORD (DEFAULT: "" - Optional password for the server)
 ```
 
 # Updating the server

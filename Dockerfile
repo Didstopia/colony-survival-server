@@ -34,7 +34,7 @@ EXPOSE 27017/tcp
 
 # Setup default environment variables for the server
 ENV SERVER_NAME "Docker"
-ENV SERVER_EXTRA_ARGS ""
+ENV SERVER_PASSWORD ""
 
 # Start the server
 ENTRYPOINT ["./start.sh"]
