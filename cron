@@ -1,0 +1,6 @@
+#!/usr/bin/with-contenv sh
+
+# this line here is what we should have to get rid of the hard link error
+touch /etc/crontab /etc/cron.*/*
+
+exec cron -f
