@@ -1,8 +1,8 @@
 # Builder image
-FROM golang:1.10 as builder
+FROM golang:1.12 as builder
 RUN go get -v github.com/Didstopia/steamer
 WORKDIR /go/src/github.com/Didstopia/steamer/
-RUN git checkout development
+RUN git checkout master
 RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o steamer .
 #RUN steamer --appinfo 748090
 

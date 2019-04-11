@@ -1,3 +1,3 @@
 #!/bin/bash
 
-docker build -t didstopia/colony-survival-server:latest .
+docker build --rm -t didstopia/colony-survival-server:latest .
