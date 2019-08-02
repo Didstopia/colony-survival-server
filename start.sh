@@ -38,7 +38,7 @@ echo ""
 echo "Starting Colony Survival.."
 echo ""
 if [ ! -z "$SERVER_PASSWORD" ]; then
-	exec /steamcmd/colonysurvival/colonyserver.x86_64 -batchmode -nographics start_server +server.gameport 27016 +server.world "${SERVER_NAME}" +server.name "${SERVER_NAME}" +server.networktype SteamOnline +server.password ${SERVER_PASSWORD} 2>&1
+	exec /steamcmd/colonysurvival/colonyserver.x86_64 -batchmode -nographics start_server +server.gameport 27016 +server.steamport 27017 +server.world "${SERVER_NAME}" +server.name "${SERVER_NAME}" +server.networktype SteamOnline +server.password ${SERVER_PASSWORD} 2>&1
 else
-	exec /steamcmd/colonysurvival/colonyserver.x86_64 -batchmode -nographics start_server +server.gameport 27016 +server.world "${SERVER_NAME}" +server.name "${SERVER_NAME}" +server.networktype SteamOnline 2>&1
+	exec /steamcmd/colonysurvival/colonyserver.x86_64 -batchmode -nographics start_server +server.gameport 27016 +server.steamport 27017 +server.world "${SERVER_NAME}" +server.name "${SERVER_NAME}" +server.networktype SteamOnline 2>&1
 fi
