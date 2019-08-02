@@ -27,6 +27,9 @@ else
 	bash /steamcmd/steamcmd.sh +runscript /install.txt
 fi
 
+# Colony Survival includes a 64-bit version of steamclient.so, so we need to tell the OS where it exists
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/steamcmd/colonysurvival/linux64
+
 # Set the working directory
 cd /steamcmd/colonysurvival || exit
 
@@ -34,4 +37,8 @@ cd /steamcmd/colonysurvival || exit
 echo ""
 echo "Starting Colony Survival.."
 echo ""
-exec /server.sh 2>&1
+if [ ! -z "$SERVER_PASSWORD" ]; then
+	exec /steamcmd/colonysurvival/colonyserver.x86_64 -batchmode -nographics start_server +server.gameport 27016 +server.world "${SERVER_NAME}" +server.name "${SERVER_NAME}" +server.networktype SteamOnline +server.password ${SERVER_PASSWORD} 2>&1
+else
+	exec /steamcmd/colonysurvival/colonyserver.x86_64 -batchmode -nographics start_server +server.gameport 27016 +server.world "${SERVER_NAME}" +server.name "${SERVER_NAME}" +server.networktype SteamOnline 2>&1
+fi

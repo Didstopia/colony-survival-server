@@ -21,7 +21,6 @@ RUN add-apt-repository ppa:longsleep/golang-backports && \
     apt-get update && \
     apt-get install -y --no-install-recommends \
     net-tools \
-    expect \
     jq \
     cron \
     rsyslog \
@@ -37,7 +36,6 @@ ADD install.txt /install.txt
 
 # Copy any scripts
 ADD start.sh /start.sh
-ADD server.sh /server.sh
 ADD update.sh /update.sh
 
 # Make sure they're executable
@@ -53,6 +51,8 @@ ADD crontab /update.cron
 WORKDIR /
 
 # Expose necessary ports
+#EXPOSE 27004/tcp
+#EXPOSE 27004/udp
 EXPOSE 27016/tcp
 EXPOSE 27016/udp
 EXPOSE 27017/tcp
