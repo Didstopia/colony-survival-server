@@ -1,15 +1,25 @@
 #!/usr/bin/env bash
 
+# Setup error handling
+set -e
+set -o pipefail
+
+# Enable debugging
+# set -x
+
+# Print the user we're currently running as
+echo "Running as user: $(whoami)"
+
 # Remove the old cached app info if it exists
-if [ -f "/root/Steam/appcache/appinfo.vdf" ]; then
-	rm -fr /root/Steam/appcache/appinfo.vdf
+if [ -f "$HOME/Steam/appcache/appinfo.vdf" ]; then
+	rm -fr $HOME/Steam/appcache/appinfo.vdf
 fi
 
 # Setup and start scheduled jobs
 echo "Setting up scheduled jobs.."
-service rsyslog start
-crontab -u root /update.cron
-service cron start
+sudo service rsyslog start
+crontab -u $(whoami) /app/update.cron
+sudo service cron start
 echo "Scheduled jobs now running!"
 
 # Check that Colony Survival exists in the first place
@@ -18,17 +28,19 @@ if [ ! -f "/steamcmd/colonysurvival/colonyserver.x86_64" ]; then
 	echo ""
 	echo "Installing Colony Survival.."
 	echo ""
-	bash /steamcmd/steamcmd.sh +runscript /install.txt
+	bash /steamcmd/steamcmd.sh +runscript /app/install.txt
 else
 	# Update Colony Survival from install.txt
 	echo ""
 	echo "Updating Colony Survival.."
 	echo ""
-	bash /steamcmd/steamcmd.sh +runscript /install.txt
+	bash /steamcmd/steamcmd.sh +runscript /app/install.txt
 fi
 
 # Colony Survival includes a 64-bit version of steamclient.so, so we need to tell the OS where it exists
-export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/steamcmd/colonysurvival/linux64
+mkdir -p $HOME/.steam/sdk64
+cp -f /steamcmd/linux64/steamclient.so $HOME/.steam/sdk64/steamclient.so
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$HOME/.steam/sdk64
 
 # Set the working directory
 cd /steamcmd/colonysurvival || exit
@@ -38,7 +50,7 @@ echo ""
 echo "Starting Colony Survival.."
 echo ""
 if [ ! -z "$SERVER_PASSWORD" ]; then
-	exec /steamcmd/colonysurvival/colonyserver.x86_64 -batchmode -nographics start_server +server.gameport 27016 +server.steamport 27017 +server.world "${SERVER_NAME}" +server.name "${SERVER_NAME}" +server.networktype SteamOnline +server.password ${SERVER_PASSWORD} 2>&1
+	exec /steamcmd/colonysurvival/colonyserver.x86_64 ${SERVER_STARTUP_ARGS} +server.world "${SERVER_NAME}" +server.name "${SERVER_NAME}" +server.password ${SERVER_PASSWORD} 2>&1
 else
-	exec /steamcmd/colonysurvival/colonyserver.x86_64 -batchmode -nographics start_server +server.gameport 27016 +server.steamport 27017 +server.world "${SERVER_NAME}" +server.name "${SERVER_NAME}" +server.networktype SteamOnline 2>&1
+	exec /steamcmd/colonysurvival/colonyserver.x86_64 ${SERVER_STARTUP_ARGS} +server.world "${SERVER_NAME}" +server.name "${SERVER_NAME}" 2>&1
 fi

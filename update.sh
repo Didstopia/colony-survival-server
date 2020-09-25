@@ -1,14 +1,20 @@
 #!/usr/bin/env bash
 
+# Setup error handling
 set -e
 #set -o pipefail
-#set -x
+
+# Enable debugging
+# set -x
+
+# Print the user we're currently running as
+echo "Running as user: $(whoami)"
 
 echo "Checking for updates.."
 
 # Remove the old cached app info if it exists
-if [ -f "/root/Steam/appcache/appinfo.vdf" ]; then
-	rm -fr /root/Steam/appcache/appinfo.vdf
+if [ -f "$HOME/Steam/appcache/appinfo.vdf" ]; then
+	rm -fr $HOME/Steam/appcache/appinfo.vdf
 fi
 
 # Use "steamer" to get the Steam app info as valid JSON

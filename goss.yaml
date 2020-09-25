@@ -1,18 +1,20 @@
 command:
-  ps -eo comm | tee /tmp/what_do_i_see:
+  running:
     title: Colony Survival Server should be running
+    exec: "docker exec colony-survival-server ps -eo comm | tee /tmp/what_do_i_see"
     exit-status: 0
     stdout:
-      - colonyserverdedicated.exe
+      - colonyserver.x8
+    timeout: 10000 # Milliseconds
 
 port:
   tcp:27016:
     title: Colony Survival Server should be accepting TCP connections on port 27016
     listening: true
-
-port:
+    timeout: 10000 # Milliseconds
   tcp:27017:
     title: Colony Survival Server should be accepting TCP connections on port 27017
     listening: true
+    timeout: 10000 # Milliseconds
 
 ## TODO: Test graceful shutdown
