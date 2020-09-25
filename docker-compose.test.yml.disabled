@@ -1,0 +1,31 @@
+version: '3.7'
+
+#GOSS_WAIT_OPTS="--retry-timeout 300s --sleep 1s > /dev/null" GOSS_SLEEP="15" dgoss run -p 0.0.0.0:27016:27016/tcp -p 0.0.0.0:27016:27016/udp -p 0.0.0.0:27017:27017/tcp -v "$(pwd)/colonysurvival_data:/steamcmd/colonysurvival" --name colony-survival-server -d didstopia/colony-survival-server
+
+services:
+
+  # colony-survival-server:
+  #   image: didstopia/colony-survival-server:latest
+  #   build:
+  #     context: .
+  #   ports:
+  #     - 27016:27016/tcp
+  #     - 27016:27016/udp
+  #   volumes:
+  #     - ${PWD}/colonysurvival_data:/steamcmd/colonysurvival"
+
+  dgoss:
+    image: praqma/dgoss:latest
+    command: dgoss run -p 0.0.0.0:27016:27016/tcp -p 0.0.0.0:27016:27016/udp -p 0.0.0.0:27017:27017/tcp -v "/steamcmd/colonysurvival:/steamcmd/colonysurvival" --name colony-survival-server didstopia/colony-survival-server:latest
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./colonysurvival_data:/steamcmd/colonysurvival"
+      - ./goss.yaml:/goss.yaml
+      - ./goss_wait.yaml:/goss_wait.yaml
+    environment:
+      GOSS_WAIT_OPTS: "--retry-timeout 60s --sleep 1s > /dev/null"
+      GOSS_SLEEP: "60"
+      GOSS_FILES_STRATEGY: "cp"
+    # ports:
+    #   - 27016:27016/tcp
+    #   - 27016:27016/udp

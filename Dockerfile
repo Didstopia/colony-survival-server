@@ -1,17 +1,16 @@
 # Builder image
-FROM golang:1.12 as builder
+FROM golang:1.15 as builder
 RUN go get -v github.com/Didstopia/steamer
 WORKDIR /go/src/github.com/Didstopia/steamer/
-RUN git checkout master
 RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o steamer .
 #RUN steamer --appinfo 748090
 
 
 
 # Primary image
-FROM didstopia/base:steamcmd-ubuntu-16.04
+FROM didstopia/base:steamcmd-ubuntu-18.04
 
-MAINTAINER Didstopia <support@didstopia.com>
+LABEL maintainer="Didstopia <support@didstopia.com>"
 
 # Fixes apt-get warnings
 ARG DEBIAN_FRONTEND=noninteractive
@@ -23,8 +22,8 @@ RUN add-apt-repository ppa:longsleep/golang-backports && \
     net-tools \
     jq \
     cron \
-    rsyslog \
-    mono-complete && \
+    libsdl2-2.0-0:i386 \
+    rsyslog && \
 	rm -rf /var/lib/apt/lists/*
 
 # Create and set the steamcmd folder as a volume
@@ -32,20 +31,20 @@ RUN mkdir -p /steamcmd/colonysurvival
 VOLUME ["/steamcmd/colonysurvival"]
 
 # Add the steamcmd installation script
-ADD install.txt /install.txt
+ADD install.txt /app/install.txt
 
 # Copy any scripts
-ADD start.sh /start.sh
-ADD update.sh /update.sh
+ADD start.sh /app/start.sh
+ADD update.sh /app/update.sh
 
 # Make sure they're executable
-RUN chmod +x /*.sh
+RUN chmod +x /app/*.sh
 
 # Copy the compiled Go app
 COPY --from=builder /go/src/github.com/Didstopia/steamer/steamer /usr/bin
 
 # Add the crontab
-ADD crontab /update.cron
+ADD crontab /app/update.cron
 
 # Set the current working directory
 WORKDIR /
@@ -57,7 +56,15 @@ EXPOSE 27016/tcp
 EXPOSE 27016/udp
 EXPOSE 27017/tcp
 
+# Run as a non-root user by default
+ENV PGID 1000
+ENV PUID 1000
+
+# Enable passwordless sudo
+ENV ENABLE_PASSWORDLESS_SUDO "true"
+
 # Setup default environment variables for the server
+ENV SERVER_STARTUP_ARGS "-batchmode -nographics start_server +server.gameport 27016 +server.steamport 27017 +server.networktype SteamOnline"
 ENV SERVER_NAME "Docker"
 ENV SERVER_PASSWORD ""
 
@@ -65,4 +72,4 @@ ENV SERVER_PASSWORD ""
 #RUN steamer --appinfo 748090
 
 # Start the server
-ENTRYPOINT ["./start.sh"]
+CMD [ "/bin/bash", "/app/start.sh"]
