@@ -64,7 +64,7 @@ ENV PUID 1000
 ENV ENABLE_PASSWORDLESS_SUDO "true"
 
 # Setup default environment variables for the server
-ENV SERVER_STARTUP_ARGS "-batchmode -nographics start_server +server.gameport 27016 +server.steamport 27017 +server.networktype SteamOnline"
+ENV SERVER_STARTUP_ARGS "-batchmode -nographics start_server +server.gameport 27016 +server.steamport 27017 +server.networktype SteamOnline +server.usevac true"
 ENV SERVER_NAME "Docker"
 ENV SERVER_PASSWORD ""
 
