@@ -8,7 +8,7 @@ RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o steamer .
 
 
 # Primary image
-FROM didstopia/base:steamcmd-ubuntu-18.04
+FROM --platform=amd64 didstopia/base:steamcmd-ubuntu-24.04
 
 LABEL maintainer="Didstopia <support@didstopia.com>"
 
@@ -16,8 +16,7 @@ LABEL maintainer="Didstopia <support@didstopia.com>"
 ARG DEBIAN_FRONTEND=noninteractive
 
 # Install dependencies
-RUN add-apt-repository ppa:longsleep/golang-backports && \
-    apt-get update && \
+RUN apt-get update && \
     apt-get install -y --no-install-recommends \
     net-tools \
     jq \

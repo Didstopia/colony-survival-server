@@ -17,7 +17,7 @@ fi
 
 # Setup and start scheduled jobs
 echo "Setting up scheduled jobs.."
-sudo service rsyslog start
+sudo rsyslogd
 crontab -u $(whoami) /app/update.cron
 sudo service cron start
 echo "Scheduled jobs now running!"
